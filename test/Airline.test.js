@@ -54,18 +54,29 @@ contract('Airline', async accounts => {
     });
 
     it('should allow customers to redeem loyalty points', async () => {
-        let flight = await instance.flights(1);
+        let flight = await instance.flights(0);
         let price = flight[1];
 
-        await instance.buyFlight(1, { from: accounts[0], value: price });
+        await instance.buyFlight(0, { from: accounts[0], value: price });
         let balance = await web3.eth.getBalance(accounts[0]);
         await instance.redeemLoyaltyPoints({ from: accounts[0] });
         let finalBalance = await web3.eth.getBalance(accounts[0]);
 
         let { loyaltyPoints } = await instance.customers(accounts[0]);
 
-
-        expect(BigInt(loyaltyPoints)).to.be.equals(0);
+        expect(BigInt(loyaltyPoints)).to.be.equals(BigInt(0));
         expect(finalBalance > balance).to.be.true;
+    });
+
+    it('should fail when trying to redeem loyalty points', async () => {
+        let flight = await instance.flights(1);
+        let price = flight[1];
+        try {
+            await instance.buyFlight(1, { from: accounts[0], value: price });
+            await instance.redeemLoyaltyPoints({ from: accounts[0] });
+        } catch (e) {
+            return;
+        }
+        assert.fail();
     });
 });

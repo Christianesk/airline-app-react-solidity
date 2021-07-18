@@ -50,6 +50,7 @@ contract Airline is Ownable {
     function redeemLoyaltyPoints() public payable{
         Customer storage customer = customers[msg.sender];
         uint256 etherToRefund = etherPerPoint * customer.loyaltyPoints;
+        require(address(this).balance > etherToRefund, "There is not enough ether in the contract to return"); 
         payable(msg.sender).transfer(etherToRefund);
         customer.loyaltyPoints = 0;
     }
