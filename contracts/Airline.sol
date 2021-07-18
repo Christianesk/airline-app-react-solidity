@@ -20,7 +20,7 @@ contract Airline is Ownable {
 
     mapping(address => Customer) public customers;
     mapping(address => Flight[]) public customerFlights;
-    mapping(address => uint256) public customersTotalFlights;
+    mapping(address => uint256) public customerTotalFlights;
 
     event FlightPurchased(address indexed customer, uint256 price);
 
@@ -38,7 +38,7 @@ contract Airline is Ownable {
         customer.loyaltyPoints += 5;
         customer.totalFlights += 1;
         customerFlights[msg.sender].push(flight);
-        customersTotalFlights[msg.sender]++;
+        customerTotalFlights[msg.sender]++;
 
         emit FlightPurchased(msg.sender, flight.price);
     }
@@ -47,10 +47,10 @@ contract Airline is Ownable {
         return flights.length;
     }
 
-    function redeemLoyaltyPoints() public {
+    function redeemLoyaltyPoints() public payable{
         Customer storage customer = customers[msg.sender];
-        uint256 ethertoRefund = etherPerPoint * customer.loyaltyPoints;
-        payable(msg.sender).transfer(ethertoRefund);
+        uint256 etherToRefund = etherPerPoint * customer.loyaltyPoints;
+        payable(msg.sender).transfer(etherToRefund);
         customer.loyaltyPoints = 0;
     }
 
