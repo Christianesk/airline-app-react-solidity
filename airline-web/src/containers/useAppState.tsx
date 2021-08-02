@@ -23,11 +23,11 @@ export const useAppState = (): IAppState => {
 
     useEffect(() => {
         getContract();
-    }, [account])
+    }, [account]);
 
     useEffect(() => {
         getBalance();
-    }, [contract])
+    }, [contract]);
 
     const connectToWeb3 = async (): Promise<void> => {
         const accounts: string[] = await web3.eth.getAccounts();
@@ -37,14 +37,19 @@ export const useAppState = (): IAppState => {
 
     const getContract = (): void => {
         let airlineContract: Contract;
-        airlineContract = new web3.eth.Contract(AirlineContract.abi as AbiItem[], account);
-        setContract(airlineContract);
+        if (account !== "") {
+            airlineContract = new web3.eth.Contract(AirlineContract.abi as AbiItem[], account);
+            setContract(airlineContract);
+        }
     }
 
     const getBalance = async (): Promise<void> => {
-        let weiBalance: string = await web3.eth.getBalance(account);
-        setBalance(weiBalance);
+        let weiBalance: string;
+        if (account !== "") {
+            weiBalance = await web3.eth.getBalance(account);
+            setBalance(weiBalance);
+        }
     };
 
-    return { account, balance }
+    return { account, balance };
 };
