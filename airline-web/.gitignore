@@ -11,6 +11,9 @@
 # production
 /build
 
+#folders
+/src/environments/*.ts
+
 # misc
 .DS_Store
 .env.local

@@ -211,7 +211,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"Airline.sol": "Airline"
+			"contracts/Airline.sol": "Airline"
 		},
 		"evmVersion": "berlin",
 		"libraries": {},
@@ -225,7 +225,7 @@
 		"remappings": []
 	},
 	"sources": {
-		"Airline.sol": {
+		"contracts/Airline.sol": {
 			"keccak256": "0xc64e27fdb216413a2cf95170e96f1c82f606e397b40320ca7b447580ad3c1be6",
 			"license": "MIT",
 			"urls": [
@@ -233,7 +233,7 @@
 				"dweb:/ipfs/QmeDFmW8578a8PEAkvmP11Co1QWbEeooSckHUokH1zt18U"
 			]
 		},
-		"Ownable.sol": {
+		"contracts/Ownable.sol": {
 			"keccak256": "0xe5d8c565b06d7bb0c0079e02050cb5b7ce398f606ecfba7f7f9c6fddb3a5a0a3",
 			"license": "GPL-3.0",
 			"urls": [
