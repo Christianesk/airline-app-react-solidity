@@ -1,11 +1,22 @@
 import React from 'react';
-import PanelBalance from './components/PanelBalance/PanelBalance'
-import PanelFlights from './components/PanelFlights/PanelFlights'
+import PanelBalance from './components/PanelBalance/PanelBalance';
+import PanelFlights from './components/PanelFlights/PanelFlights';
+import PanelLoyaltyPoints from './components/PanelLoyaltyPoints/PanelLoyaltyPoints';
 import { useAppState } from "./containers/useAppState";
+import { ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
 
-  const { account, balance, flights, buyFlight, customerFlights } = useAppState();
+  const {
+    account,
+    balance,
+    flights,
+    buyFlight,
+    customerFlights,
+    refundableEther,
+    redeemLoyaltyPoints
+  } = useAppState();
 
   return (
     <div className="container">
@@ -18,7 +29,7 @@ function App() {
           <PanelBalance title="Balance" children={account} aditionaChildren={balance}></PanelBalance>
         </div>
         <div className="col-sm">
-          <PanelBalance title="Loyalty points - refundable ether" children="" />
+          <PanelLoyaltyPoints title="Loyalty points - refundable ether" children={refundableEther} redeemLoyaltyPoints={redeemLoyaltyPoints} />
         </div>
       </div>
       <div className="row pt-5">
@@ -35,6 +46,7 @@ function App() {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }

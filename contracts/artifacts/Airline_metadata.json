@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.6+commit.11564f7e"
+		"version": "0.8.4+commit.c7e474f2"
 	},
 	"language": "Solidity",
 	"output": {
@@ -24,6 +24,12 @@
 						"internalType": "uint256",
 						"name": "price",
 						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "flight",
+						"type": "string"
 					}
 				],
 				"name": "FlightPurchased",
@@ -211,9 +217,9 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"contracts/Airline.sol": "Airline"
+			"Airline.sol": "Airline"
 		},
-		"evmVersion": "berlin",
+		"evmVersion": "istanbul",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
@@ -225,15 +231,15 @@
 		"remappings": []
 	},
 	"sources": {
-		"contracts/Airline.sol": {
-			"keccak256": "0xc64e27fdb216413a2cf95170e96f1c82f606e397b40320ca7b447580ad3c1be6",
+		"Airline.sol": {
+			"keccak256": "0xa48a99c1632071ea6534adce5cf9c50c19c383bfb7bd973b52408cd8c2c53645",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://007fcee4465629ee546007e7e52b3a4c2fba439b0b2b964d20ca5be1a627b449",
-				"dweb:/ipfs/QmeDFmW8578a8PEAkvmP11Co1QWbEeooSckHUokH1zt18U"
+				"bzz-raw://9754083d0aeb59d7ef92191af022c1b811dff6d31cb309bece54033ea2bc70e6",
+				"dweb:/ipfs/QmcBTynkL7eZPA792fz9cwMiRLdqkJftURAbHRyb55dL5V"
 			]
 		},
-		"contracts/Ownable.sol": {
+		"Ownable.sol": {
 			"keccak256": "0xe5d8c565b06d7bb0c0079e02050cb5b7ce398f606ecfba7f7f9c6fddb3a5a0a3",
 			"license": "GPL-3.0",
 			"urls": [

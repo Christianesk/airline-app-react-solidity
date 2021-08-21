@@ -4,6 +4,7 @@ import { Contract } from 'web3-eth-contract';
 import AirlineContract from '../contracts/Airline.json';
 import { AbiItem } from 'web3-utils/types';
 import { environments } from "../environments/environments";
+import { toast } from 'react-toastify';
 
 
 export interface IAppState {
@@ -12,6 +13,8 @@ export interface IAppState {
     flights: IFlight[];
     buyFlight: (flightIndex: Number, value: string) => Promise<any>;
     customerFlights: IFlight[];
+    refundableEther: string;
+    redeemLoyaltyPoints: () => Promise<any>;
 }
 
 export interface IFlight {
@@ -27,6 +30,7 @@ export const useAppState = (): IAppState => {
     const [balance, setBalance] = useState<string>("0");
     const [flights, setFlights] = useState<IFlight[]>([]);
     const [customerFlights, setCustomerFlights] = useState<IFlight[]>([]);
+    const [refundableEther, setRefundableEther] = useState<string>("0");
 
     window.ethereum.on('accountsChanged', (accounts: string[]) => {
         connectToWeb3(accounts);
@@ -47,6 +51,7 @@ export const useAppState = (): IAppState => {
             getBalance();
             getTotalFlights();
             getCustommerFlights();
+            getRefundableEther();
         }
     }, [contract]);
 
@@ -94,10 +99,17 @@ export const useAppState = (): IAppState => {
     };
 
     const buyFlight = async (flightIndex: Number, value: string) => {
-        const buy = await contract?.methods.buyFlight(flightIndex).send({ from: account, value: web3.utils.toWei(value) });
+        const buyFlight = await contract?.methods.buyFlight(flightIndex).send({ from: account, value: web3.utils.toWei(value) });
         getCustommerFlights();
+        getRefundableEther();
+        getBalance();
+        const { customer, price, flight } = buyFlight?.events.FlightPurchased.returnValues;
 
-        return buy;
+        if (customer.toLowerCase() === account) {
+            toast(`You purchased a flight to ${flight} with a cost of ${converterToEther(price)} ether.`);
+        }
+
+        return buyFlight;
     };
 
     const getCustommerFlights = async (): Promise<void> => {
@@ -110,15 +122,30 @@ export const useAppState = (): IAppState => {
         for (let i = 0; i < customerTotalFlights; i++) {
             let flight = await contract?.methods.customerFlights(account, i).call();
             flights.push(flight);
-            setCustomerFlights(mapFlights(flights))
+            setCustomerFlights(mapFlights(flights));
         }
     };
+
+    const getRefundableEther = async (): Promise<void> => {
+        let weiRefundable: string;
+        weiRefundable = await contract?.methods.getRefundableEther().call({ from: account });
+        setRefundableEther(converterToEther(weiRefundable));
+    }
+
+    const redeemLoyaltyPoints = async () => {
+        const redeemLoyaltyPoints = await contract?.methods.redeemLoyaltyPoints().send({ from: account });
+        getBalance();
+        getRefundableEther();
+        return redeemLoyaltyPoints;
+    }
 
     return {
         account,
         balance,
         flights,
         buyFlight,
-        customerFlights
+        customerFlights,
+        refundableEther,
+        redeemLoyaltyPoints
     };
 };

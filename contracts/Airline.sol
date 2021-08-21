@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.6;
+pragma solidity >=0.4.22 <0.9.0;
 
 import "./Ownable.sol";
 
@@ -22,7 +22,7 @@ contract Airline is Ownable {
     mapping(address => Flight[]) public customerFlights;
     mapping(address => uint256) public customerTotalFlights;
 
-    event FlightPurchased(address indexed customer, uint256 price);
+    event FlightPurchased(address indexed customer, uint256 price, string flight);
 
     constructor() {
         flights.push(Flight("Tokio", 4 ether));
@@ -40,7 +40,7 @@ contract Airline is Ownable {
         customerFlights[msg.sender].push(flight);
         customerTotalFlights[msg.sender]++;
 
-        emit FlightPurchased(msg.sender, flight.price);
+        emit FlightPurchased(msg.sender, flight.price, flight.name);
     }
 
     function totalFlights() public view returns (uint256) {
